@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Cotizar Envio</title>
+    <title>Cotizar Envio Demo</title>
+
     <style>
 
         #detalle{
@@ -23,6 +24,10 @@
 
         li > label{
             float: right;
+        }
+
+        #warning{
+            color: red;
         }
 
        
@@ -131,13 +136,26 @@
             </div>
         </div>
         <hr>
-        <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
+        <div>
+                <div>
+                    <div class="container">
                         <h3>Selecciona el lugar de salida y el lugar de entrega</h3>
-                        <strong>Arrastre los marcadores en el mapa</strong>
-                        <div style="float: none; margin: 0 auto;width:1000px;height:600px;background:gray" id="map"></div>
+                        <br>
+                        <div class="col-sm-6 col-centered">
+                            <div class="col-xs-6">
+                                <label>Lugar de Salida</label>
+                                <input id="salida" class="form-control" placeholder="Nombre del lugar">
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Lugar de Destino</label>
+                                <input id = "llegada" class="form-control" placeholder="Nombre del lugar">
+                            </div>
+                        </div>
+                        <br>
                     </div>
+                    <br>
+                    <strong>O arrastre los marcadores en el mapa</strong>
+                    <div style="float: none; margin: 0 auto;width:1000px;height:600px;background:gray" id="map"></div>
                 </div>
             
                 <hr>
@@ -152,6 +170,7 @@
                         <span class="fa fa-plane"></span>
                     </button>
                     <br>
+                    
                     <br>
                     <ul id="detalle" class="text-center" hidden>
                         <strong>Detalle de la cotización</strong>
@@ -226,6 +245,7 @@
             if(precioVolumetrico <= 0) {
                 document.getElementById('warning').hidden = false;
                 document.getElementById('total').innerHTML = "Monto Total $ 0"; 
+                document.getElementById('submit').disabled = true;
                 return;
             }
 
@@ -259,6 +279,7 @@
 
                 var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+        
                 directionsDisplay.setMap(map);
 
                 // Listener para obtener la distancia al cambiar los puntos
