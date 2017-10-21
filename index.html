@@ -9,15 +9,29 @@
     <title>Cotizar Envio</title>
     <style>
 
-        #total{
-            margin-top: 3%;
+        #detalle{
+            width: 300px;
+            list-style: none;
+            border-style: ridge;
+            text-align: left;
         }
 
+        li{
+            display: inline-block;
+            width: 80%;
+        }
+
+        li > label{
+            float: right;
+        }
+
+       
         .col-centered{
             float: none;
             margin: 0 auto;
         }
 
+        /* Estilos para el switch */
         .switch {
             position: relative;
             display: inline-block;
@@ -137,17 +151,26 @@
                     <button id="aereo" class="btn btn-info" style="width: 100px;" onclick="confirmarMetodoEnvio('aereo')">
                         <span class="fa fa-plane"></span>
                     </button>
-                    
                     <br>
-                    <label id="total">Monto Total $ 0</label>
+                    <br>
+                    <ul id="detalle" class="text-center" hidden>
+                        <strong>Detalle de la cotización</strong>
+                        <li>Distancia <label id="distancia"></label></li>
+                        <li>Peso Volumétrico <label id="pVolumetrico"></label></li>
+                        <li>Precio Base  <label id="pBase"></label></li>
+                        <li>Seguro <label id="seguro"></label></li>
+                    
+                        <li>Monto Total <label id="total"></label></li>
+                    </ul>
                 </div>
-                <button class="btn btn-success" style="margin: 3%;">Realizar pedido</button>
+                <button id="submit" class="btn btn-success" style="margin: 3%;" disabled>Realizar pedido</button>
             </div>
     </center>
     <script>
 
         var metodoEnvio = 'terrestre';
         var distancia;
+        var distanciaKm;
 
         function confirmarMetodoEnvio(metodo){
             metodoEnvio = metodo;
@@ -161,6 +184,16 @@
             }
            
             cotizarEnvio();		
+        }
+
+        function mostrarDetalle(pesoVolumetrico, precioBase, seguro, factorUrgencia, factorTransporte){
+            document.getElementById('detalle').hidden = false;
+            document.getElementById('distancia').innerHTML =  distanciaKm;
+            document.getElementById('pVolumetrico').innerHTML =  pesoVolumetrico;
+            document.getElementById('pBase').innerHTML =  '$' + precioBase;
+            document.getElementById('seguro').innerHTML = seguro;
+
+            document.getElementById('submit').disabled = false;
         }
 
         function cotizarEnvio(){
@@ -197,7 +230,8 @@
 
             }
 
-            document.getElementById('total').innerHTML = "Monto Total $ " + precio;
+            mostrarDetalle(precioVolumetrico, precioBase, seguro, factorUrgencia, factorTransporte);
+            document.getElementById('total').innerHTML = '$' + Math.round(precio * 100) / 100;
 
         }
 
@@ -228,6 +262,7 @@
                     var myroute = result.routes[0];
                     console.log(myroute.legs[0].distance.text);
                     distancia = myroute.legs[0].distance.value;
+                    distanciaKm = myroute.legs[0].distance.text;
                     cotizarEnvio();
                 });
 
